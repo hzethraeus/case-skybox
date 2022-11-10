@@ -1,30 +1,11 @@
 import styles from '../styles/PlayerCard.module.css';
 import lights from '../images/lights.png';
 import flares from '../images/flares.svg';
+import { Player } from '../graphql/generated-types';
 //import axios from 'axios';
 
 interface PlayerProps {
-  player: PlayerInfo;
-}
-
-interface PlayerInfo {
-  name: string;
-  clan: string;
-  country: string;
-  playerData: {
-    playerId: string;
-    clanId: string;
-  };
-
-  playerStats: {
-    ovr: number;
-    acc: number;
-    imp: number;
-    ast: number;
-    ent: number;
-    utl: number;
-    exp: number;
-  };
+  player: Player;
 }
 
 const PlayerCard = ({ player }: PlayerProps) => {

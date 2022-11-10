@@ -1,9 +1,10 @@
 import styles from './styles/PlayerPage.module.css';
 import PlayerCard from './components/PlayerCard';
-import { useQuery, gql } from '@apollo/client';
+//import { useQuery, gql } from '@apollo/client';
+import { Player, useGetPlayersQuery } from './graphql/generated-types';
 interface PlayersProps {}
 
-interface PlayerInfo {
+/*interface PlayerInfo {
   name: string;
   clan: string;
   country: string;
@@ -24,8 +25,10 @@ interface PlayerInfo {
 }
 
 interface PlayerArray {
-  players: PlayerInfo[];
+  players: Player[];
 }
+*/
+/*
 const GET_PLAYER_QUERY = gql`
   query GetPlayers {
     players {
@@ -47,9 +50,9 @@ const GET_PLAYER_QUERY = gql`
       }
     }
   }
-`;
+`;*/
 const PlayerPage: React.FunctionComponent<PlayersProps> = () => {
-  const { loading, data } = useQuery<PlayerArray>(GET_PLAYER_QUERY);
+  const { loading, data } = useGetPlayersQuery(); //useQuery<PlayerArray>(GET_PLAYER_QUERY);
   console.log(data);
   return (
     <>
@@ -58,7 +61,7 @@ const PlayerPage: React.FunctionComponent<PlayersProps> = () => {
         <div>Loading...</div>
       ) : (
         <div className={styles.playersContainer}>
-          {data?.players?.map((player: PlayerInfo, idx: number) => {
+          {data?.players?.map((player: Player, idx: number) => {
             return <PlayerCard key={idx} player={player} />;
           })}
         </div>
