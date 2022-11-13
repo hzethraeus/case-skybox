@@ -3,73 +3,85 @@ import lights from '../images/lights.png';
 import flares from '../images/flares.svg';
 import { Player } from '../graphql/generated-types';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface PlayerProps {
   player: Player;
 }
-type ImageUrl = {
+interface ImageData {
   url: string;
-};
+  mime_type: string;
+}
 const PlayerCard = ({ player }: PlayerProps) => {
-  //const playerImage: ImageUrl = { url: '' };
-  const countryImage: ImageUrl = { url: '' };
-  const clanImage: ImageUrl = { url: '' };
-  const [playerImage, setPlayerImage] = useState<String>('');
-  async function getPlayerImage() {
-    try {
-      const response_player = await axios.get(
-        `http://office.skybox.gg:3000/resources/players/${player.playerData.playerId}`
-      );
-      console.log('Player image: ', response_player);
-      if (response_player.status === 200) {
-        setPlayerImage(response_player.data.base64_image);
+  const [playerImage, setPlayerImage] = useState<ImageData>({ url: '', mime_type: '' });
+  const [countryImage, setCountryImage] = useState<ImageData>({ url: '', mime_type: '' });
+  const [clanImage, setClanImage] = useState<ImageData>({ url: '', mime_type: '' });
+  useEffect(() => {
+    async function getPlayerImage() {
+      try {
+        const response_player = await axios.get(
+          `http://office.skybox.gg:3000/resources/players/${player.playerData.playerId}`
+        );
+        if (response_player.status === 200) {
+          setPlayerImage({
+            url: response_player.data.base64_image,
+            mime_type: response_player.data.mime_type,
+          });
+        }
+      } catch {
+        console.log('error');
       }
-    } catch {
-      console.log('error');
     }
-  }
-  async function getCountryImage() {
-    try {
-      const response_country = await axios.get(
-        `http://office.skybox.gg:3000/resources/flags/${player.country}`
-      );
-      console.log('Country image: ', response_country);
-      if (response_country.status === 200) {
-        countryImage.url = response_country.data.base64_image;
+    async function getCountryImage() {
+      try {
+        const response_country = await axios.get(
+          `http://office.skybox.gg:3000/resources/flags/${player.country}`
+        );
+        if (response_country.status === 200) {
+          setCountryImage({
+            url: response_country.data.base64_image,
+            mime_type: response_country.data.mime_type,
+          });
+        }
+      } catch {
+        console.log('error');
       }
-    } catch {
-      console.log('error');
     }
-  }
-  async function getClanImage() {
-    try {
-      const response_clan = await axios.get(
-        `http://office.skybox.gg:3000/resources/clans/${player.playerData.clanId}`
-      );
-      console.log('Clan image: ', response_clan);
-      if (response_clan.status === 200) {
-        clanImage.url = response_clan.data.base64_image;
-      }
-    } catch {
-      console.log('error');
-    }
-  }
 
-  getPlayerImage();
-  getCountryImage();
-  getClanImage();
+    async function getClanImage() {
+      try {
+        const response_clan = await axios.get(
+          `http://office.skybox.gg:3000/resources/clans/${player.playerData.clanId}`
+        );
+        if (response_clan.status === 200) {
+          setClanImage({
+            url: response_clan.data.base64_image,
+            mime_type: response_clan.data.mime_type,
+          });
+        }
+      } catch {
+        console.log('error');
+      }
+    }
+
+    getPlayerImage();
+    getCountryImage();
+    getClanImage();
+  }, [player.playerData.playerId, player.country, player.playerData.clanId]);
+
   const playerStatsPropNames: string[] = Object.keys(player?.playerStats);
   return (
     <div className={styles.entireCard}>
       <div className={styles.outerCard}>
         <div className={styles.innerCard}>
           <div className={styles.upperCard}>
-            <img
-              className={styles.playerImage}
-              src={`data:image/webp;base64,${playerImage}`}
-              alt="hej"
-            />
+            {playerImage.url.length > 0 && (
+              <img
+                className={styles.playerImage}
+                src={`data:${playerImage.mime_type};base64,${playerImage.url}`}
+                alt="Player"
+              />
+            )}
             <img className={styles.lightsImg} src={lights} alt="lights" />
             <img className={styles.flaresImg} src={flares} alt="flares" />
           </div>
@@ -87,8 +99,21 @@ const PlayerCard = ({ player }: PlayerProps) => {
                 <div className={styles.playerClan}>{player.clan}</div>
               </div>
               <div className={styles.playerInfoRight}>
-                <div className={styles.playerCountry}>SE</div>
-                <div className={styles.playerRank}>#1</div>
+                {clanImage.url.length > 0 && (
+                  <img
+                    className={styles.clanImage}
+                    src={`data:${clanImage.mime_type};base64,${clanImage.url}`}
+                    alt="Players clan"
+                  />
+                )}
+
+                {countryImage.url.length > 0 && (
+                  <img
+                    className={styles.countryImage}
+                    src={`data:${countryImage.mime_type};base64,${countryImage.url}`}
+                    alt="Players country"
+                  />
+                )}
               </div>
             </div>
             <div className={styles.playerStats}>

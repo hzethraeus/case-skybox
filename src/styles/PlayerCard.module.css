@@ -1,19 +1,20 @@
+
+/*Entire card, just for controlling margin to other cards*/
 .entireCard{
     margin:10px;
-
+    display:flex;
+    justify-content: center;
 }
+/* "outer" card which is the outer border*/
 .outerCard{
-    width:439px;
     height:739px;
+    width:439px;
     position:relative;
     clip-path: polygon(50% 0%, 100% 7%, 100% 93%, 50% 100%, 0% 93%, 0 7%);
     background: linear-gradient(19.44deg, #1E40AF 0%, #B91C1C 100%);
-
-    /*path(
-        "M223.5 5.12981L438 54.3237V684.676L223.5 733.87L9 684.676V54.3237L223.5 5.12981Z"
-      );*/
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    }
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+/* Innercard, which cuts out just a border of the outercard border. Removed 10px from all sides. */
 .innerCard{
     position: absolute;
     top:10px;
@@ -23,8 +24,7 @@
     clip-path: polygon(50% 0%, 100% 7%, 100% 93%, 50% 100%, 0% 93%, 0 7%);
     background: #1E40AF;
 }
-
-
+/* Uppercard, box containing flares, lights and potentially player image (some image missing) */
 .upperCard{
     overflow:hidden;
 width:439px;
@@ -34,12 +34,14 @@ top: 0px;
 position:absolute;
 background:  linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), linear-gradient(54.9deg, #1E40AF 0%, #B91C1C 100%);
 }
+/* Player image */
 .playerImage{
     position: absolute;
 left:6px;
     top: 10.96%;
 
 }
+/* Lights Image*/
 .lightsImg{
 position: absolute;
 width: 1680.12px;
@@ -49,6 +51,7 @@ top: -375px;
 opacity: 0.5;
 filter: blur(10px);
 }
+/* Flares images (round bubbles) */
 .flaresImg{
     position: absolute;
 width: 481px;
@@ -59,6 +62,8 @@ top: 0px;
 mix-blend-mode: normal;
 filter: blur(1.5px);
 }
+
+/* Mid space, a small rectangle between lower and uppercard. */
 .midSpace{
     position: absolute;
 width: 439px;
@@ -67,6 +72,8 @@ left: 0px;
 top: 368px;
 background: linear-gradient(90deg, #583379 2.26%, #802A53 97.75%);
 }
+/* Midstat and innermidstat, two polygons to create a hexagon with border. 
+->innerMidStat is enough, just add a white border to it.*/
 .midStat{
     position:absolute;
     width: 97px;
@@ -90,6 +97,7 @@ display: flex;
 flex-direction: column;
 align-items: center;
 }
+/*innerMidstat > Statcount and statName just have small differences from their original class*/
 .innerMidStat > .statCount{
     margin-top:8px;
 font-weight: 600;
@@ -104,7 +112,7 @@ font-size: 18px;
 letter-spacing: 0.04em;
 text-shadow: 0px 1.08079px 3.24236px rgba(0, 0, 0, 0.4);
 }
-
+/*  */
 .lowerCard{
     overflow:clip;
 width:419px;
@@ -122,14 +130,8 @@ font-style: normal;
 font-weight: 600;
 font-size: 28px;
 line-height: 100%;
-/* identical to box height, or 28px */
-
 letter-spacing: 0.04em;
-
-/* tailwind/blue/50 */
-
 color: #EFF6FF;
-
 mix-blend-mode: normal;
 }
 .playerClan{
@@ -138,12 +140,9 @@ font-style: italic;
 font-weight: 467;
 font-size: 14px;
 line-height: 100%;
-/* identical to box height, or 14px */
-
 letter-spacing: 0.08em;
 text-transform: uppercase;
 font-variation-settings: 'slnt' -10;
-
 mix-blend-mode: normal;
 color:#788ccf;
 }
@@ -160,6 +159,15 @@ color:#788ccf;
     display:flex;
     flex-direction: row;
     gap:10px;
+}
+.clanImage{
+    width: 28px;
+height: 28px;
+}
+.countryImage{
+    height:16px;
+    width:24px;
+    padding-top:4px;
 }
 .playerStats{
   display:flex;
@@ -187,7 +195,9 @@ width: 120px;
 height: 177px;
 
 }
-/* Potentiellt slå ihop dessa*/
+/* 
+-> merge statsright with statsleft
+*/
 .playerStatsRight{
     display: flex;
     flex-direction: column;
@@ -198,15 +208,11 @@ height: 177px;
     width: 120px;
     height: 177px;
 }
-.divider{
 
+.divider{
 width: 2px;
 height: 196px;
-
 background: rgba(255, 255, 255, 0.2);
-
-/* Inside auto layout */
-
 flex: none;
 align-self: stretch;
 flex-grow: 0;
@@ -217,17 +223,21 @@ flex-grow: 0;
     gap:6px;
     align-items: center;
 }
+/* Some stats have 1, 2 or 3 digits, i think it was cleaner to have them on fixed width and align the stat to center */
 .statCount{
     font-family: 'Russo One';
     font-style: normal;
     font-weight: 400;
     font-size: 40px;
     line-height: 100%;
-    text-align: right;
     color: #EFF6FF;
     mix-blend-mode: normal;
     text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+    
+    width:60px;
+    text-align: center;
 }
+/* Some stats have 1, 2 or 3 digits, i think it was cleaner to have them on fixed width and align the stat to center */
 .statName{
     font-family: 'Teko';
 font-style: normal;
@@ -238,9 +248,11 @@ color:#a5b3df;
 text-align: center;
 letter-spacing: 0.02em;
 text-transform: uppercase;
-
 mix-blend-mode: normal;
 text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
+
+width:64px;
+text-align:center;
 }
 .backgroundLineContainer{
     position:absolute;
@@ -250,7 +262,6 @@ text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.4);
 background-blend-mode: screen;
 mix-blend-mode: normal;
 transform: rotate(-180deg);
-
 }
 .backgroundLine{
     margin:15px;

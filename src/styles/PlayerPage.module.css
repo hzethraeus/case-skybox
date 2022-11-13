@@ -1,5 +1,16 @@
 .playersContainer{
+    /* max-width:2000px; */
     display:grid;
     grid-template-columns: 1fr 1fr 1fr;
-    background-color: #181d20;
+    
+}
+@media screen and (max-width: 768px) {
+    .playersContainer{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media screen and (max-width: 480px) {
+    .playersContainer{
+        grid-template-columns: 1fr;
+    }
 }
